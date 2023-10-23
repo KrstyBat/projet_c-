@@ -2,6 +2,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
 using namespace std;
 
@@ -38,13 +39,18 @@ void setValue(vector<vector <int>>& input, int value, int x, int y)
 int main()
 {
 	srand(time(NULL));
+	HANDLE  hConsole;
     int i;
+
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     int valeur = rand()% 2 + 1;
     valeur = valeur * 2;
 
     int vX = rand() % 4 + 1;
     int vY = rand() % 4 + 1;
+
+	//SetConsoleTextAttribute(hConsole, 204);
 
     vector <vector <int>> grille;
     for (i = 0; i < 4; i++)
