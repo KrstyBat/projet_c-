@@ -1,5 +1,7 @@
 #include <grid.h>
 
+using namespace std
+
 Grid::Grid()
 {
 	for (i = 0; i < sizeY; i++)
