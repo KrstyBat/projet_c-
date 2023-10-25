@@ -7,7 +7,9 @@
 #include <windows.h>
 #include "conio.h"
 
-#include "classes/grid.h"
+//#include "classes/grid.h"
+#include "test.h"
+#include "grid.h"
 
 #define KEY_ENTER 13
 #define KEY_SPACE 32
@@ -80,13 +82,19 @@ int main()
 
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    //Grid* grid = new Grid();
+    Grid* grid = new Grid();
+    Test* test = new Test();
 
     int valeur = rand()% 2 + 1;
     valeur = valeur * 2;
 
     int vX = rand() % 4 + 1;
     int vY = rand() % 4 + 1;
+
+    test->add(valeur);
+    test->add(vX);
+    test->add(vY);
+    cout << test->getNumber() << endl;
 
 	SetConsoleTextAttribute(hConsole, 1);
 
@@ -97,14 +105,14 @@ int main()
     //    
     //};
 
-    //grid->setValue(valeur, vX, vY);
-    //grid->setValue(2048, 1, 1);
-    //grid->setValue(248, 2, 3);
-    //grid->setValue(28, 4, 4);
+    grid->setValue(vX, vY, valeur);
+    grid->setValue(1, 1, 2048);
+    grid->setValue(2, 3, 248);
+    grid->setValue(4, 4, 28);
 
-    //grid->print(); 
+    grid->print(); 
     int action = 0;
-    system("cls");
+    system("pause");
     while (1)
     {
         if (_kbhit()){

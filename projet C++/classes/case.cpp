@@ -1,4 +1,4 @@
-#include <case.h>
+#include "case.h"
 
 Case::Case(int val)
 {
