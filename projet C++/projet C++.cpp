@@ -77,8 +77,7 @@ void setValue(vector<vector <int>>& input, int value, int x, int y)
 int main()
 {
 	srand(time(NULL));
-	HANDLE  hConsole;
-    int i;
+	HANDLE hConsole;
 
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -108,11 +107,11 @@ int main()
     grid->setValue(vX, vY, valeur);
     grid->setValue(1, 1, 2048);
     grid->setValue(2, 3, 248);
-    grid->setValue(4, 4, 28);
+    grid->setValue(2, 2, 24);
 
     grid->print(); 
     int action = 0;
-    system("pause");
+    //system("pause");
     while (1)
     {
         if (_kbhit()){
@@ -120,19 +119,20 @@ int main()
             switch (key)
             {
                 case KEY_UP: // Flèche haut
-                    SetConsoleTextAttribute(hConsole, 1);
+                    SetConsoleTextAttribute(hConsole, 10);
                     cout << "Pressed Up" << endl;
                     break;
                 case KEY_DOWN: // Flèche bas
-                    SetConsoleTextAttribute(hConsole, 2);
+                    SetConsoleTextAttribute(hConsole, 20);
                     cout << "Pressed Down" << endl;
                     break;
                 case KEY_LEFT: // Flèche gauche
-                    SetConsoleTextAttribute(hConsole, 4);
+                    SetConsoleTextAttribute(hConsole, 40);
                     cout << "Pressed Left" << endl;
+                    grid->MoveToLeft();
                     break;
                 case KEY_RIGHT: // Flèche droite
-                    SetConsoleTextAttribute(hConsole, 5);
+                    SetConsoleTextAttribute(hConsole, 50);
                     cout << "Pressed Right" << endl;
                     break;
 
@@ -150,7 +150,7 @@ int main()
         }
     }
 
-    //delete grid;
+    delete grid;
 
     return 0;
 }

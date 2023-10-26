@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 class Case
 {
 	int value;
@@ -6,6 +10,7 @@ class Case
 		Case();
 
 		void setValue(int val);
+		
 		int getValue();
 
 		int upgrade();

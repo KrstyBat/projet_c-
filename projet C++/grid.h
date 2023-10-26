@@ -11,13 +11,19 @@ class Grid
 
 	public:
 		Grid();
+		~Grid();
 
 		void print();
 
 		void setValue(int x, int y, int value);
 
+		void MoveToLeft();
+		void MoveToRight();
+		void MoveToUp();
+		void MoveToDown();
+
 	private:
 		void printVector(vector<Case*>& vect);
 
-		double getNumberDigits(int value);
+		int getNumberDigits(int value);
 };

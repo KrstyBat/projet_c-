@@ -18,6 +18,7 @@ int Case::getValue()
 int Case::upgrade()
 {
 	value *= 2;
+	return value;
 }
 
 void Case::kill()
