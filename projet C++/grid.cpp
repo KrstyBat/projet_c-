@@ -89,11 +89,57 @@ int Grid::getNumberDigits(int value)
 
 void Grid::MoveToLeft()
 {
+	for (int col = 0; col < sizeX; col++) {
+		for (int row = 1; row < sizeY; row++) {
+			int cur_col = col;
+			while (cur_col >= 1)
+			{
+				if (grid[row][cur_col]->getValue() != 0)
+				{
+					if (cur_col-1 < 0) {
+						break;
+					}
 
+					if (grid[row][cur_col - 1]->getValue() == 0) {
+						grid[row][cur_col - 1]->setValue(grid[row][cur_col]->getValue());
+						grid[row][cur_col]->kill();
+					}
+					else if (grid[row][cur_col]->getValue() == grid[row][cur_col]->getValue()) {
+						grid[row][cur_col - 1]->upgrade();
+						grid[row][cur_col]->kill();
+					}
+				}
+				cur_col -= 1;
+			}
+		}
+	}
 }
 void Grid::MoveToRight()
 {
+	for (int col = sizeX-1; col > 0; col--) {
+		for (int row = 1; row < sizeY; row++) {
+			int cur_col = col;
+			while (cur_col <= sizeX-1)
+			{
+				if (grid[row][cur_col]->getValue() != 0)
+				{
+					if (cur_col + 1 > sizeX-1) {
+						break;
+					}
 
+					if (grid[row][cur_col + 1]->getValue() == 0) {
+						grid[row][cur_col + 1]->setValue(grid[row][cur_col]->getValue());
+						grid[row][cur_col]->kill();
+					}
+					else if (grid[row][cur_col]->getValue() == grid[row][cur_col]->getValue()) {
+						grid[row][cur_col + 1]->upgrade();
+						grid[row][cur_col]->kill();
+					}
+				}
+				cur_col += 1;
+			}
+		}
+	}
 }
 void Grid::MoveToUp() {
 	for (int col = 0; col < sizeX; col++) {
@@ -124,5 +170,29 @@ void Grid::MoveToUp() {
 }
 void Grid::MoveToDown()
 {
+	for (int col = 0; col < sizeX; col++) {
+		for (int row = 1; row >= 0; row--) {
+			int cur_row = row;
+			while (cur_row <= sizeY-1)
+			{
+				if (grid[cur_row][col]->getValue() != 0) {
+					if (cur_row + 1 < 0) {
+						break;
+					}
 
+					if (grid[cur_row + 1][col]->getValue() == 0)
+					{
+						grid[cur_row + 1][col]->setValue(grid[cur_row][col]->getValue());
+						grid[cur_row][col]->kill();
+					}
+					else if (grid[cur_row + 1][col]->getValue() == grid[cur_row][col]->getValue())
+					{
+						grid[cur_row + 1][col]->upgrade();
+						grid[cur_row][col]->kill();
+					}
+				}
+				cur_row += 1;
+			}
+		}
+	}
 }

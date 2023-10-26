@@ -95,8 +95,6 @@ int main()
     test->add(vY);
     cout << test->getNumber() << endl;
 
-	SetConsoleTextAttribute(hConsole, 1);
-
     //vector <vector <int>> grille;
     //for (i = 0; i < 4; i++)
     //{
@@ -132,6 +130,7 @@ int main()
                     action = 1;
                     //SetConsoleTextAttribute(hConsole, 20);
                     cout << "Pressed Down" << endl;
+                    grid->MoveToDown();
                     break;
                 case KEY_LEFT: // Flèche gauche
                     action = 1;
@@ -143,6 +142,7 @@ int main()
                     action = 1;
                     //SetConsoleTextAttribute(hConsole, 50);
                     cout << "Pressed Right" << endl;
+                    grid->MoveToRight();
                     break;
 
                 case KEY_SPACE:
