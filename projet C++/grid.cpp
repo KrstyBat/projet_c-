@@ -95,9 +95,27 @@ void Grid::MoveToRight()
 {
 
 }
-void Grid::MoveToUp()
-{
+void Grid::MoveToUp() {
+	for (int col = 0; col < sizeX; col++) {
+		for (int row = 1; row < sizeY; row++) {
+			if (grid[row][col]->getValue() != 0) {
+				if (row - 1 < 0) {
+					break;
+				}
 
+				if (grid[row - 1][col]->getValue() == 0)
+				{
+					grid[row - 1][col]->setValue(grid[row][col]->getValue());
+					grid[row][col]->kill();
+				}
+				else if (grid[row - 1][col]->getValue() == grid[row][col]->getValue())
+				{
+					grid[row - 1][col]->upgrade();
+					grid[row][col]->kill();
+				}
+			}
+		}
+	}
 }
 void Grid::MoveToDown()
 {
