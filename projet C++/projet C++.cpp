@@ -106,8 +106,8 @@ int main()
 
     grid->setValue(vX, vY, valeur);
     grid->setValue(1, 1, 2048);
-    grid->setValue(2, 3, 248);
-    grid->setValue(2, 2, 24);
+    grid->setValue(2, 4, 4);
+    grid->setValue(2, 2, 4);
 
     grid->print(); 
     int action;
@@ -124,31 +124,31 @@ int main()
                 {
                 case KEY_UP: // Flèche haut
                     action = 1;
-                    SetConsoleTextAttribute(hConsole, 10);
+                    //SetConsoleTextAttribute(hConsole, 10);
                     cout << "Pressed Up" << endl;
                     grid->MoveToUp();
                     break;
                 case KEY_DOWN: // Flèche bas
                     action = 1;
-                    SetConsoleTextAttribute(hConsole, 20);
+                    //SetConsoleTextAttribute(hConsole, 20);
                     cout << "Pressed Down" << endl;
                     break;
                 case KEY_LEFT: // Flèche gauche
                     action = 1;
-                    SetConsoleTextAttribute(hConsole, 40);
+                    //SetConsoleTextAttribute(hConsole, 40);
                     cout << "Pressed Left" << endl;
                     grid->MoveToLeft();
                     break;
                 case KEY_RIGHT: // Flèche droite
                     action = 1;
-                    SetConsoleTextAttribute(hConsole, 50);
+                    //SetConsoleTextAttribute(hConsole, 50);
                     cout << "Pressed Right" << endl;
                     break;
 
                 case KEY_SPACE:
                 case KEY_ENTER: //Entrée ou Espace: démine une case
                     action = 1;
-                    SetConsoleTextAttribute(hConsole, 15);
+                    //SetConsoleTextAttribute(hConsole, 15);
                     cout << "Pressed Space or Enter" << endl;
                     break;
                 }
