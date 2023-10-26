@@ -110,28 +110,37 @@ int main()
     grid->setValue(2, 2, 24);
 
     grid->print(); 
-    int action = 0;
+    int action;
     //system("pause");
     while (1)
     {
-        if (_kbhit()){
-            int key = _getch();
-            switch (key)
-            {
+        system("cls");
+        action = 0;
+        grid->print();
+        while (1) {
+            if (_kbhit()) {
+                int key = _getch();
+                switch (key)
+                {
                 case KEY_UP: // Flèche haut
+                    action = 1;
                     SetConsoleTextAttribute(hConsole, 10);
                     cout << "Pressed Up" << endl;
+                    grid->MoveToUp();
                     break;
                 case KEY_DOWN: // Flèche bas
+                    action = 1;
                     SetConsoleTextAttribute(hConsole, 20);
                     cout << "Pressed Down" << endl;
                     break;
                 case KEY_LEFT: // Flèche gauche
+                    action = 1;
                     SetConsoleTextAttribute(hConsole, 40);
                     cout << "Pressed Left" << endl;
                     grid->MoveToLeft();
                     break;
                 case KEY_RIGHT: // Flèche droite
+                    action = 1;
                     SetConsoleTextAttribute(hConsole, 50);
                     cout << "Pressed Right" << endl;
                     break;
@@ -142,11 +151,11 @@ int main()
                     SetConsoleTextAttribute(hConsole, 15);
                     cout << "Pressed Space or Enter" << endl;
                     break;
+                }
             }
-        }
-
-        if (action == 1) {
-            break;
+            if (action == 1) {
+                break;
+            }
         }
     }
 
