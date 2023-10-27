@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 
 #include "grid.h"
 
@@ -16,6 +17,8 @@ Grid::Grid()
 		};
 		grid.push_back(v);
 	};
+
+	cmd = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 Grid::~Grid()
@@ -60,6 +63,57 @@ bool Grid::isFull()
 	return is_full;
 }
 
+void Grid::setConsoleColor(int value)
+{
+	int hex = 0;
+	switch (value)
+	{
+		case 2:
+			hex = 7;
+			break;
+		case 4:
+			hex = 8;
+			break;
+		case 8:
+			hex = 14;
+			break;
+		case 16:
+			hex = 6;
+			break;
+		case 32:
+			hex = 5;
+			break;
+		case 64:
+			hex = 9;
+			break;
+		case 128:
+			hex = 1;
+			break;
+		case 256:
+			hex = 10;
+			break;
+		case 512:
+			hex = 2;
+			break;
+		case 1024:
+			hex = 11;
+			break;
+		case 2048:
+			hex = 224;
+			break;
+		case 4096:
+			hex = 160;
+			break;
+		case 8192:
+			hex = 192;
+			break;
+		default:
+			hex = 15;
+			break;
+	}
+	SetConsoleTextAttribute(cmd, hex);
+}
+
 void Grid::print()
 {
 	int i;
@@ -90,7 +144,10 @@ void Grid::printVector(vector<Case*>& vect)
 			before_space = "";
 			after_space = "";
 		};
-		cout << "|" << before_space << val << after_space;
+		cout << "|" << before_space;
+		setConsoleColor(val);
+		cout << val << after_space;
+		SetConsoleTextAttribute(cmd, 15);
 	};
 	cout << "|" << endl;
 }

@@ -27,10 +27,6 @@ int main()
     uniform_int_distribution<int> randomValue(1, 2);
     uniform_int_distribution<int> randomCase(1, 4);
 
-	HANDLE hConsole;
-
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
     Grid* grid = new Grid();
 
     int val1, val2;
@@ -76,25 +72,21 @@ int main()
                 {
                 case KEY_UP: // Flèche haut
                     action = true;
-                    //SetConsoleTextAttribute(hConsole, 10);
                     //cout << "Pressed Up" << endl;
                     grid->MoveToUp();
                     break;
                 case KEY_DOWN: // Flèche bas
                     action = true;
-                    //SetConsoleTextAttribute(hConsole, 20);
                     //cout << "Pressed Down" << endl;
                     grid->MoveToDown();
                     break;
                 case KEY_LEFT: // Flèche gauche
                     action = true;
-                    //SetConsoleTextAttribute(hConsole, 40);
                     //cout << "Pressed Left" << endl;
                     grid->MoveToLeft();
                     break;
                 case KEY_RIGHT: // Flèche droite
                     action = true;
-                    //SetConsoleTextAttribute(hConsole, 50);
                     //cout << "Pressed Right" << endl;
                     grid->MoveToRight();
                     break;

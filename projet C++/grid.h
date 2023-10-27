@@ -1,4 +1,5 @@
 #include <vector>
+#include <windows.h>
 #include "case.h"
 
 using namespace std;
@@ -10,6 +11,8 @@ class Grid
 	vector<vector<Case*>> grid;
 	int score = 0;
 
+	HANDLE cmd;
+
 	public:
 		Grid();
 		~Grid();
@@ -19,6 +22,8 @@ class Grid
 		bool setValue(int x, int y, int value, bool force);
 
 		int getScore();
+
+		void setConsoleColor(int value);
 
 		bool isFull();
 

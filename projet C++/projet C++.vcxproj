@@ -127,7 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="case.cpp" />
+    <ClCompile Include="grid.cpp" />
     <ClCompile Include="projet C++.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="case.h" />
+    <ClInclude Include="grid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
