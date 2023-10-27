@@ -5,9 +5,12 @@ Case::Case()
 	value = 0;
 }
 
-void Case::setValue(int val)
+bool Case::setValue(int val, bool force)
 {
+	if (!force && value != 0)
+		return false;
 	value = val;
+	return true;
 }
 
 int Case::getValue()

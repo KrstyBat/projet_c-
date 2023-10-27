@@ -31,9 +31,33 @@ Grid::~Grid()
 	}
 }
 
-void Grid::setValue(int x, int y, int value)
+bool Grid::setValue(int x, int y, int value, bool force)
 {
-	grid[y - 1][x - 1]->setValue(value);
+	return grid[y - 1][x - 1]->setValue(value, force);
+}
+
+int Grid::getScore()
+{
+	return score;
+}
+
+bool Grid::isFull()
+{
+	bool is_full = true;
+	for (int i = 0; i < sizeY; i++)
+	{
+		for (int j = 0; j < sizeX; j++)
+		{
+			if (grid[j][i]->getValue() == 0)
+			{
+				is_full = false;
+				break;
+			}
+		}
+		if (!is_full)
+			break;
+	}
+	return is_full;
 }
 
 void Grid::print()
@@ -90,9 +114,9 @@ int Grid::getNumberDigits(int value)
 void Grid::MoveToLeft()
 {
 	for (int col = 0; col < sizeX; col++) {
-		for (int row = 1; row < sizeY; row++) {
+		for (int row = 0; row < sizeY; row++) {
 			int cur_col = col;
-			while (cur_col >= 1)
+			while (cur_col >= 0)
 			{
 				if (grid[row][cur_col]->getValue() != 0)
 				{
@@ -101,11 +125,11 @@ void Grid::MoveToLeft()
 					}
 
 					if (grid[row][cur_col - 1]->getValue() == 0) {
-						grid[row][cur_col - 1]->setValue(grid[row][cur_col]->getValue());
+						grid[row][cur_col - 1]->setValue(grid[row][cur_col]->getValue(), true);
 						grid[row][cur_col]->kill();
 					}
-					else if (grid[row][cur_col]->getValue() == grid[row][cur_col]->getValue()) {
-						grid[row][cur_col - 1]->upgrade();
+					else if (grid[row][cur_col - 1]->getValue() == grid[row][cur_col]->getValue()) {
+						score += grid[row][cur_col - 1]->upgrade();
 						grid[row][cur_col]->kill();
 					}
 				}
@@ -116,8 +140,8 @@ void Grid::MoveToLeft()
 }
 void Grid::MoveToRight()
 {
-	for (int col = sizeX-1; col > 0; col--) {
-		for (int row = 1; row < sizeY; row++) {
+	for (int col = sizeX-1; col >= 0; col--) {
+		for (int row = 0; row < sizeY; row++) {
 			int cur_col = col;
 			while (cur_col <= sizeX-1)
 			{
@@ -128,11 +152,11 @@ void Grid::MoveToRight()
 					}
 
 					if (grid[row][cur_col + 1]->getValue() == 0) {
-						grid[row][cur_col + 1]->setValue(grid[row][cur_col]->getValue());
+						grid[row][cur_col + 1]->setValue(grid[row][cur_col]->getValue(), true);
 						grid[row][cur_col]->kill();
 					}
-					else if (grid[row][cur_col]->getValue() == grid[row][cur_col]->getValue()) {
-						grid[row][cur_col + 1]->upgrade();
+					else if (grid[row][cur_col + 1]->getValue() == grid[row][cur_col]->getValue()) {
+						score += grid[row][cur_col + 1]->upgrade();
 						grid[row][cur_col]->kill();
 					}
 				}
@@ -154,12 +178,12 @@ void Grid::MoveToUp() {
 
 					if (grid[cur_row - 1][col]->getValue() == 0)
 					{
-						grid[cur_row - 1][col]->setValue(grid[cur_row][col]->getValue());
+						grid[cur_row - 1][col]->setValue(grid[cur_row][col]->getValue(), true);
 						grid[cur_row][col]->kill();
 					}
 					else if (grid[cur_row - 1][col]->getValue() == grid[cur_row][col]->getValue())
 					{
-						grid[cur_row - 1][col]->upgrade();
+						score += grid[cur_row - 1][col]->upgrade();
 						grid[cur_row][col]->kill();
 					}
 				}
@@ -176,18 +200,18 @@ void Grid::MoveToDown()
 			while (cur_row <= sizeY-1)
 			{
 				if (grid[cur_row][col]->getValue() != 0) {
-					if (cur_row + 1 < 0) {
+					if (cur_row + 1 > sizeY - 1) {
 						break;
 					}
 
 					if (grid[cur_row + 1][col]->getValue() == 0)
 					{
-						grid[cur_row + 1][col]->setValue(grid[cur_row][col]->getValue());
+						grid[cur_row + 1][col]->setValue(grid[cur_row][col]->getValue(), true);
 						grid[cur_row][col]->kill();
 					}
 					else if (grid[cur_row + 1][col]->getValue() == grid[cur_row][col]->getValue())
 					{
-						grid[cur_row + 1][col]->upgrade();
+						score += grid[cur_row + 1][col]->upgrade();
 						grid[cur_row][col]->kill();
 					}
 				}

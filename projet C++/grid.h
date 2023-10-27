@@ -8,6 +8,7 @@ class Grid
 	int sizeX = 4;
 	int sizeY = 4;
 	vector<vector<Case*>> grid;
+	int score = 0;
 
 	public:
 		Grid();
@@ -15,7 +16,11 @@ class Grid
 
 		void print();
 
-		void setValue(int x, int y, int value);
+		bool setValue(int x, int y, int value, bool force);
+
+		int getScore();
+
+		bool isFull();
 
 		void MoveToLeft();
 		void MoveToRight();

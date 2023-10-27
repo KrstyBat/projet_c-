@@ -5,14 +5,10 @@
 #include <time.h>
 #include <math.h>
 #include <windows.h>
-#include "conio.h"
+#include <random>
+#include <conio.h>
 
-//#include "classes/grid.h"
-#include "test.h"
 #include "grid.h"
-
-#define KEY_ENTER 13
-#define KEY_SPACE 32
 
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
@@ -76,88 +72,111 @@ void setValue(vector<vector <int>>& input, int value, int x, int y)
 
 int main()
 {
-	srand(time(NULL));
+	//srand(time(NULL));
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> randomValue(1, 2);
+    uniform_int_distribution<int> randomCase(1, 4);
+
 	HANDLE hConsole;
 
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     Grid* grid = new Grid();
-    Test* test = new Test();
 
-    int valeur = rand()% 2 + 1;
-    valeur = valeur * 2;
+    int val1, val2;
+    val1 = rand() % 2 + 1;
+    val2 = rand() % 2 + 1;
+    val1 = val1 * 2;
+    val2 = val2 * 2;
 
-    int vX = rand() % 4 + 1;
-    int vY = rand() % 4 + 1;
+    int vX1 = rand() % 4 + 1;
+    int vY1 = rand() % 4 + 1;
+    int vX2 = rand() % 4 + 1;
+    int vY2 = rand() % 4 + 1;
 
-    test->add(valeur);
-    test->add(vX);
-    test->add(vY);
-    cout << test->getNumber() << endl;
+    while (vX1 == vX2 && vY1 == vY2)
+    {
+        vX1 = rand() % 4 + 1;
+        vY1 = rand() % 4 + 1;
+        vX2 = rand() % 4 + 1;
+        vY2 = rand() % 4 + 1;
+    }
 
-    //vector <vector <int>> grille;
-    //for (i = 0; i < 4; i++)
-    //{
-    //    grille.push_back(vector <int>(4, 0));
-    //    
-    //};
-
-    grid->setValue(vX, vY, valeur);
-    grid->setValue(1, 1, 2048);
-    grid->setValue(2, 4, 4);
-    grid->setValue(2, 2, 4);
+    grid->setValue(vX1, vY1, val1, true);
+    grid->setValue(vX2, vY2, val1, true);
 
     grid->print(); 
-    int action;
-    //system("pause");
+    bool action;
+    bool ending = false;
     while (1)
     {
         system("cls");
-        action = 0;
+        action = false;
+        cout << "score: " << grid->getScore() << endl;
         grid->print();
-        while (1) {
+        if (grid->isFull())
+        {
+            ending = true;
+            break;
+        }
+        while (true) {
             if (_kbhit()) {
                 int key = _getch();
                 switch (key)
                 {
                 case KEY_UP: // Flèche haut
-                    action = 1;
+                    action = true;
                     //SetConsoleTextAttribute(hConsole, 10);
-                    cout << "Pressed Up" << endl;
+                    //cout << "Pressed Up" << endl;
                     grid->MoveToUp();
                     break;
                 case KEY_DOWN: // Flèche bas
-                    action = 1;
+                    action = true;
                     //SetConsoleTextAttribute(hConsole, 20);
-                    cout << "Pressed Down" << endl;
+                    //cout << "Pressed Down" << endl;
                     grid->MoveToDown();
                     break;
                 case KEY_LEFT: // Flèche gauche
-                    action = 1;
+                    action = true;
                     //SetConsoleTextAttribute(hConsole, 40);
-                    cout << "Pressed Left" << endl;
+                    //cout << "Pressed Left" << endl;
                     grid->MoveToLeft();
                     break;
                 case KEY_RIGHT: // Flèche droite
-                    action = 1;
+                    action = true;
                     //SetConsoleTextAttribute(hConsole, 50);
-                    cout << "Pressed Right" << endl;
+                    //cout << "Pressed Right" << endl;
                     grid->MoveToRight();
-                    break;
-
-                case KEY_SPACE:
-                case KEY_ENTER: //Entrée ou Espace: démine une case
-                    action = 1;
-                    //SetConsoleTextAttribute(hConsole, 15);
-                    cout << "Pressed Space or Enter" << endl;
                     break;
                 }
             }
-            if (action == 1) {
+            if (action == true) {
+                if (!grid->isFull())
+                {
+                    vX1 = randomCase(gen);
+                    vY1 = randomCase(gen);
+                    while (!grid->setValue(vX1, vY1, randomValue(gen) * 2, false))
+                    {
+                        srand(time(NULL));
+                        vX1 = randomCase(gen);
+                        vY1 = randomCase(gen);
+                    }
+                } else {
+                    ending = true;
+                }
                 break;
             }
         }
+
+        if (ending)
+            break;
     }
+
+    cout << "Game over!" << endl;
+    cout << "Your score is " << grid->getScore() << "!" << endl;
+    system("timeout /t 2 /NOBREAK");
+    system("pause");
 
     delete grid;
 

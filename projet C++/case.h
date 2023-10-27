@@ -9,7 +9,7 @@ class Case
 	public:
 		Case();
 
-		void setValue(int val);
+		bool setValue(int val, bool force);
 		
 		int getValue();
 
