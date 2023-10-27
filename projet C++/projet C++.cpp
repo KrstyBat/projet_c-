@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <stdlib.h>
-#include <time.h>
 #include <math.h>
 #include <windows.h>
 #include <random>
@@ -21,58 +20,8 @@ using namespace std;
 // ─  │
 // ┴  ┤  ├  ┬  ┼
 
-/*int getNumberDigits(int i)
-{
-    int log = round(log10(i) + 1);
-    if (isinf(log))
-        return 1;
-    return round(log10(i) + 1);
-}
-
-void printVector(vector<int> const& input)
-{
-	int i;
-	for (i = 0; i < input.size(); i++)
-	{
-        int digits = getNumberDigits(input[i]);
-        string before_space = "  ";
-        string after_space = " ";
-        if (digits == 2)
-            before_space = " ";
-        else if (digits == 3)
-        {
-            before_space = " ";
-            after_space = "";
-        }
-        else if (digits == 4)
-        {
-            before_space = "";
-            after_space = "";
-        };
-		cout << "|" << before_space << input[i] << after_space ;
-	};
-	cout << "|" << endl;
-};
-
-void printGrid(vector<vector <int>> const& input)
-{
-    int i;
-    for (i = 0; i < input.size(); i++)
-    {
-        printVector(input[i]);
-    };
-	cout << endl;
-};
-
-void setValue(vector<vector <int>>& input, int value, int x, int y)
-{
-    if (x > 0 && x <= 4 && y > 0 && y <= 4)
-        input[y - 1][x - 1] = value;
-}*/
-
 int main()
 {
-	//srand(time(NULL));
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> randomValue(1, 2);
@@ -85,22 +34,22 @@ int main()
     Grid* grid = new Grid();
 
     int val1, val2;
-    val1 = rand() % 2 + 1;
-    val2 = rand() % 2 + 1;
+    val1 = randomValue(gen);
+    val2 = randomValue(gen);
     val1 = val1 * 2;
     val2 = val2 * 2;
 
-    int vX1 = rand() % 4 + 1;
-    int vY1 = rand() % 4 + 1;
-    int vX2 = rand() % 4 + 1;
-    int vY2 = rand() % 4 + 1;
+    int vX1 = randomCase(gen);
+    int vY1 = randomCase(gen);
+    int vX2 = randomCase(gen);
+    int vY2 = randomCase(gen);
 
     while (vX1 == vX2 && vY1 == vY2)
     {
-        vX1 = rand() % 4 + 1;
-        vY1 = rand() % 4 + 1;
-        vX2 = rand() % 4 + 1;
-        vY2 = rand() % 4 + 1;
+        vX1 = randomCase(gen);
+        vY1 = randomCase(gen);
+        vX2 = randomCase(gen);
+        vY2 = randomCase(gen);
     }
 
     grid->setValue(vX1, vY1, val1, true);
@@ -113,7 +62,7 @@ int main()
     {
         system("cls");
         action = false;
-        cout << "score: " << grid->getScore() << endl;
+        cout << "Score: " << grid->getScore() << endl;
         grid->print();
         if (grid->isFull())
         {
@@ -158,7 +107,6 @@ int main()
                     vY1 = randomCase(gen);
                     while (!grid->setValue(vX1, vY1, randomValue(gen) * 2, false))
                     {
-                        srand(time(NULL));
                         vX1 = randomCase(gen);
                         vY1 = randomCase(gen);
                     }
@@ -175,7 +123,7 @@ int main()
 
     cout << "Game over!" << endl;
     cout << "Your score is " << grid->getScore() << "!" << endl;
-    system("timeout /t 2 /NOBREAK");
+    system("timeout /t 2 /NOBREAK >> null");
     system("pause");
 
     delete grid;
