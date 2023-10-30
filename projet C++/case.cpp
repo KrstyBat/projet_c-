@@ -18,6 +18,16 @@ int Case::getValue()
 	return value;
 }
 
+void Case::setMerged(bool merge)
+{
+	merged = merge;
+}
+
+bool Case::getMerged()
+{
+	return merged;
+}
+
 int Case::upgrade()
 {
 	value *= 2;

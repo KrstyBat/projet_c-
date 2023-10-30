@@ -23,17 +23,26 @@ class Grid
 
 		int getScore();
 
-		void setConsoleColor(int value);
+		int getSizeX();
+		int getSizeY();
+
+		void setGrid(vector<vector<int>> simple_grid);
 
 		bool isFull();
+
+		bool compare(vector<vector<int>> simple_grid);
 
 		void MoveToLeft();
 		void MoveToRight();
 		void MoveToUp();
 		void MoveToDown();
 
+		void resetMergedCases();
+
 	private:
 		void printVector(vector<Case*>& vect);
 
 		int getNumberDigits(int value);
+
+		void setConsoleColor(int value);
 };

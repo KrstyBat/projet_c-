@@ -1,11 +1,36 @@
+#include <vector>
+#include <string>
+
+using namespace std;
+
 class Test
 {
-	int num;
+	vector<vector<int>> start;
+	vector<vector<int>> result;
+
+	vector<string> steps;
+
+	int sizeX;
+	int sizeY;
+
+	int limit;
 
 	public:
-		Test();
+		Test(int sizeX, int sizeY);	
 
-		int add(int val);
+		void setTest(int id);
 
-		int getNumber();
+		void printGrid(int which);
+
+		void printSteps();
+
+		int lowerLimit();
+
+		vector<vector<int>> getStartGrid();
+		vector<vector<int>> getResultGrid();
+
+	private:
+		void printVector(vector<int>& vect);
+
+		int getNumberDigits(int value);
 };

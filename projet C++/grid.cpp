@@ -44,6 +44,27 @@ int Grid::getScore()
 	return score;
 }
 
+int Grid::getSizeX()
+{
+	return sizeX;
+}
+
+int Grid::getSizeY()
+{
+	return sizeY;
+}
+
+void Grid::setGrid(vector<vector<int>> simple_grid)
+{
+	for (int i = 0; i < sizeY; i++)
+	{
+		for (int j = 0; j < sizeX; j++)
+		{
+			setValue(j+1, i+1, simple_grid[i][j], true);
+		}
+	}
+}
+
 bool Grid::isFull()
 {
 	bool is_full = true;
@@ -185,8 +206,9 @@ void Grid::MoveToLeft()
 						grid[row][cur_col - 1]->setValue(grid[row][cur_col]->getValue(), true);
 						grid[row][cur_col]->kill();
 					}
-					else if (grid[row][cur_col - 1]->getValue() == grid[row][cur_col]->getValue()) {
+					else if (grid[row][cur_col - 1]->getValue() == grid[row][cur_col]->getValue() && !grid[row][cur_col - 1]->getMerged()) {
 						score += grid[row][cur_col - 1]->upgrade();
+						grid[row][cur_col - 1]->setMerged(true);
 						grid[row][cur_col]->kill();
 					}
 				}
@@ -212,8 +234,9 @@ void Grid::MoveToRight()
 						grid[row][cur_col + 1]->setValue(grid[row][cur_col]->getValue(), true);
 						grid[row][cur_col]->kill();
 					}
-					else if (grid[row][cur_col + 1]->getValue() == grid[row][cur_col]->getValue()) {
+					else if (grid[row][cur_col + 1]->getValue() == grid[row][cur_col]->getValue() && !grid[row][cur_col + 1]->getMerged()) {
 						score += grid[row][cur_col + 1]->upgrade();
+						grid[row][cur_col + 1]->setMerged(true);
 						grid[row][cur_col]->kill();
 					}
 				}
@@ -238,9 +261,10 @@ void Grid::MoveToUp() {
 						grid[cur_row - 1][col]->setValue(grid[cur_row][col]->getValue(), true);
 						grid[cur_row][col]->kill();
 					}
-					else if (grid[cur_row - 1][col]->getValue() == grid[cur_row][col]->getValue())
+					else if (grid[cur_row - 1][col]->getValue() == grid[cur_row][col]->getValue() && !grid[cur_row - 1][col]->getMerged())
 					{
 						score += grid[cur_row - 1][col]->upgrade();
+						grid[cur_row - 1][col]->setMerged(true);
 						grid[cur_row][col]->kill();
 					}
 				}
@@ -266,9 +290,10 @@ void Grid::MoveToDown()
 						grid[cur_row + 1][col]->setValue(grid[cur_row][col]->getValue(), true);
 						grid[cur_row][col]->kill();
 					}
-					else if (grid[cur_row + 1][col]->getValue() == grid[cur_row][col]->getValue())
+					else if (grid[cur_row + 1][col]->getValue() == grid[cur_row][col]->getValue() && !grid[cur_row + 1][col]->getMerged())
 					{
 						score += grid[cur_row + 1][col]->upgrade();
+						grid[cur_row + 1][col]->setMerged(true);
 						grid[cur_row][col]->kill();
 					}
 				}
@@ -276,4 +301,28 @@ void Grid::MoveToDown()
 			}
 		}
 	}
+}
+
+void Grid::resetMergedCases()
+{
+	for (int row = 0; row < sizeY; row++) {
+		for (int col = 0; col < sizeX; col++) {
+			if (grid[row][col]->getMerged()) {
+				grid[row][col]->setMerged(false);
+			}
+		}
+	}
+}
+
+bool Grid::compare(vector<vector<int>> simple_grid)
+{
+	for (int i = 0; i < sizeY; i++)
+	{
+		for (int j = 0; j < sizeX; j++)
+		{
+			if (grid[i][j]->getValue() != simple_grid[i][j])
+				return false;
+		}
+	}
+	return true;
 }
