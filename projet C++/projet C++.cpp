@@ -7,6 +7,10 @@
 #include <random>
 #include <conio.h>
 
+#include <SDL.h>
+
+#include "window.h"
+
 #include "grid.h"
 #include "test.h"
 
@@ -36,22 +40,47 @@
 #define KEY_LOWER_D 100
 #define KEY_UPPER_D 68
 
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
+
 using namespace std;
 
 // ┌  ┐  ┘  └
 // ─  │
 // ┴  ┤  ├  ┬  ┼
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+        return EXIT_FAILURE;
+    /*SDL_Window* win = SDL_CreateWindow("100000000000", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+    SDL_Renderer* render = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+    //SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Project SDL ", "OUI OUI", NULL);
+
+    SDL_Color orange = { 255, 127, 40, 255 };
+
+    SDL_SetRenderDrawColor(render, 192, 192, 192, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(render);
+    SDL_SetRenderDrawColor(render, 128, 128, 128, SDL_ALPHA_OPAQUE);
+    SDL_Rect rect_upper = { 0, 0, 640, 50 };
+    SDL_Rect rect_game = { 0, 50, 400, 400 };
+    SDL_RenderFillRect(render, &rect_upper);
+    SDL_SetRenderDrawColor(render, 155, 155, 155, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(render, &rect_game);
+    SDL_RenderPresent(render);*/
+
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> randomValue(1, 2);
     uniform_int_distribution<int> randomCase(1, 4);
 
+    Window* game = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+
     Grid* grid = new Grid();
 
-    bool test = false;
+    game->gameLoop();
+
+    /*bool test = false;
     bool choose_test = false;
 
     cout << "Press T to enter Test Mode. Press any key to play normally." << endl;
@@ -286,9 +315,13 @@ int main()
             cout << "Test réussi!";
         else
             cout << "Echec du test...";
-    }
+    }*/
 
     delete grid;
+    delete game;
 
-    return 0;
+    //SDL_DestroyWindow(win);
+    SDL_Quit();
+
+    return EXIT_SUCCESS;
 }
