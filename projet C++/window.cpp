@@ -41,7 +41,7 @@ void Window::draw()
 	SDL_SetRenderDrawColor(renderer, white.r, white.g, white.b, SDL_ALPHA_OPAQUE);
 	for (int i = 0; i < children.size(); i++)
 	{
-		children[i]->draw();
+		children[i]->draw(renderer);
 	}
 	SDL_RenderPresent(renderer);
 }

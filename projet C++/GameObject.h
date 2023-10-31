@@ -10,5 +10,5 @@ class GameObject
 		GameObject(SDL_Rect rect);
 		
 		void update();
-		void draw();
+		void draw(SDL_Renderer* renderer);
 };
