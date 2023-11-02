@@ -1,6 +1,10 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include "SDL.h"
 #include <vector>
 #include "GameObject.h"
+#include "grid.h"
 
 using namespace std;
 
@@ -13,6 +17,8 @@ class Window
 	public:
 		SDL_Window* win;
 		SDL_Renderer* renderer;
+
+		Grid* grid;
 
 		Window(int w, int h);
 		~Window();
@@ -27,3 +33,5 @@ class Window
 		void update();
 		void draw();
 };
+
+#endif

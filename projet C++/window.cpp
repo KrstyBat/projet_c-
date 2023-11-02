@@ -29,7 +29,7 @@ void Window::gameLoop()
 			}
 
 		   //User requests quit
-			if (event.type == SDL_QUIT)
+			if (event.type == SDL_QUIT || grid->isFull())
 				run = false;
 		}
 	}

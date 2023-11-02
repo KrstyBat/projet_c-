@@ -1,3 +1,6 @@
+#ifndef GRID_H
+#define GRID_H
+
 #include <vector>
 #include <windows.h>
 #include "case.h"
@@ -56,3 +59,5 @@ class Grid : public GameObject
 
 		void setConsoleColor(int value);
 };
+
+#endif

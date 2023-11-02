@@ -471,8 +471,5 @@ void Grid::onSDLEvent(SDL_Event event)
 				y1 = randomCase(gen);
 			}
 		}
-		else {
-			//parent->run = false;
-		}
 	}
 }

@@ -2,13 +2,10 @@
 #define GAMEOBJECT_H
 
 #include "SDL.h"
-#include "window.h"
 
 class GameObject
 {
 	public:
-		Window* parent;
-
 		//SDL_Point* points;
 		SDL_Rect rect;
 
