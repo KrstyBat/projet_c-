@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <windows.h>
-#include <random>
 #include <conio.h>
 
 #include <SDL.h>
@@ -12,7 +11,6 @@
 #include "window.h"
 
 #include "grid.h"
-#include "test.h"
 
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
@@ -69,14 +67,12 @@ int main(int argc, char* argv[])
     SDL_RenderFillRect(render, &rect_game);
     SDL_RenderPresent(render);*/
 
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> randomValue(1, 2);
-    uniform_int_distribution<int> randomCase(1, 4);
-
     Window* game = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+    game->setBackgroudColor(255, 217, 176, 255);
 
-    Grid* grid = new Grid();
+    Grid* grid = new Grid(game->renderer);
+    game->addChild(grid);
+    //grid->setColor(255 - 150, 217 - 50, 176 - 50, 255);
 
     game->gameLoop();
 

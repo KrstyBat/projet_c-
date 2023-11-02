@@ -1,14 +1,22 @@
 #include <iostream>
+#include <vector>
+#include "GameObject.h"
 
 using namespace std;
 
-class Case
+class Case : public GameObject
 {
 	int value;
 	bool merged = false;
 
+	vector<SDL_Texture*> textures;
+
 	public:
-		Case();
+
+		int x = 0;
+		int y = 0;
+
+		Case(vector<SDL_Texture*> t);
 
 		bool setValue(int val, bool force);
 		
@@ -21,4 +29,6 @@ class Case
 		int upgrade();
 
 		void kill();
+
+		void draw(SDL_Renderer* renderer) override;
 };

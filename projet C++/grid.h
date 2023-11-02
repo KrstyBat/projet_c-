@@ -4,7 +4,7 @@
 
 using namespace std;
 	
-class Grid
+class Grid : public GameObject
 {
 	int sizeX = 4;
 	int sizeY = 4;
@@ -14,8 +14,12 @@ class Grid
 	HANDLE cmd;
 
 	public:
-		Grid();
+		vector<SDL_Texture*> cases_texture;
+
+		Grid(SDL_Renderer* renderer);
 		~Grid();
+
+		void selectRandomCases();
 
 		void print();
 
@@ -39,7 +43,13 @@ class Grid
 
 		void resetMergedCases();
 
+		void update() override;
+		void draw(SDL_Renderer* renderer) override;
+		void onSDLEvent(SDL_Event event) override;
+
 	private:
+		void loadCasesTextures(SDL_Renderer* renderer);
+		
 		void printVector(vector<Case*>& vect);
 
 		int getNumberDigits(int value);

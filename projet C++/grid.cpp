@@ -1,11 +1,19 @@
 #include <iostream>
+#include <sstream>
 #include <windows.h>
-
+#include <random>
 #include "grid.h"
 
 
-Grid::Grid()
+
+
+Grid::Grid(SDL_Renderer* renderer)
 {
+	rect = {120, 50, 400, 400};
+	color = { 255-50, 217-50, 176-50, 255 };
+
+	loadCasesTextures(renderer);
+
 	int i;
 	for (i = 0; i < sizeY; i++)
 	{
@@ -13,12 +21,39 @@ Grid::Grid()
 		int j;
 		for (j = 0; j < sizeX; j++)
 		{
-			v.push_back(new Case());
+			v.push_back(new Case(cases_texture));
 		};
 		grid.push_back(v);
 	};
 
+	selectRandomCases();
+
 	cmd = GetStdHandle(STD_OUTPUT_HANDLE);
+}
+
+void Grid::selectRandomCases()
+{
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> randomValue(1, 2);
+	uniform_int_distribution<int> randomCase(1, 4);
+
+	int val = randomValue(gen)*2;
+	int rX = randomCase(gen);
+	int rY = randomCase(gen);
+	while (!setValue(rX, rY, val, false))
+	{
+		rX = randomCase(gen);
+		rY = randomCase(gen);
+	}
+	val = randomValue(gen)*2;
+	rX = randomCase(gen);
+	rY = randomCase(gen);
+	while (!setValue(rX, rY, val, false))
+	{
+		rX = randomCase(gen);
+		rY = randomCase(gen);
+	}
 }
 
 Grid::~Grid()
@@ -31,6 +66,11 @@ Grid::~Grid()
 		{
 			delete c[j];
 		}
+	}
+
+	for (int i = 0; i < cases_texture.size(); i++)
+	{
+		SDL_DestroyTexture(cases_texture[i]);
 	}
 }
 
@@ -325,4 +365,114 @@ bool Grid::compare(vector<vector<int>> simple_grid)
 		}
 	}
 	return true;
+}
+
+void Grid::loadCasesTextures(SDL_Renderer* renderer)
+{
+	string path_before = "img/";
+	string path_after = ".bmp";
+	for (int i = 2; i <= 8192; i*=2)
+	{
+		cout << i << endl;
+		ostringstream o;
+		o << path_before << i << path_after;
+		string s = o.str();
+		const char* path = s.c_str();
+
+		cout << path << endl;
+
+		SDL_Surface* surf = SDL_LoadBMP(path);
+
+		if (surf == NULL)
+		{
+			ostringstream error_msg;
+			error_msg << "ERROR: Sprite for Case " << i << " is not loaded!";
+			string yes = error_msg.str();
+			cout << yes << endl;
+		}
+
+		cases_texture.push_back(SDL_CreateTextureFromSurface(renderer, surf));
+
+		SDL_FreeSurface(surf);
+	}
+}
+
+void Grid::update()
+{
+	GameObject::update();
+	for (int i = 0; i < sizeY; i++)
+	{
+		vector<Case*> c = grid[i];
+		for (int j = 0; j < sizeX; j++)
+		{
+			c[j]->x = j;
+			c[j]->y = i;
+		}
+	}
+}
+
+void Grid::draw(SDL_Renderer* renderer)
+{
+	GameObject::draw(renderer);
+	//cout << "O SHIT O FUCK <<" << endl;
+	for (int i = 0; i < sizeY; i++)
+	{
+		vector<Case*> c = grid[i];
+		for (int j = 0; j < sizeX; j++)
+		{
+			c[j]->draw(renderer);
+		}
+	}
+}
+
+void Grid::onSDLEvent(SDL_Event event)
+{
+	bool pressed = false;
+	if (event.type == SDL_KEYDOWN)
+	{
+		switch (event.key.keysym.sym) {
+			case SDLK_LEFT:
+				pressed = true;
+				MoveToLeft();
+				break;
+			case SDLK_RIGHT:
+				pressed = true;
+				MoveToRight();
+				break;
+			case SDLK_UP:
+				pressed = true;
+				MoveToUp();
+				break;
+			case SDLK_DOWN:
+				pressed = true;
+				MoveToDown();
+				break;
+			case SDLK_SPACE:
+				print();
+			default:
+				break;
+			}
+	}
+
+	if (pressed) {
+		resetMergedCases();
+		if (!isFull())
+		{
+			random_device rd;
+			mt19937 gen(rd());
+			uniform_int_distribution<int> randomValue(1, 2);
+			uniform_int_distribution<int> randomCase(1, 4);
+
+			int x1 = randomCase(gen);
+			int y1 = randomCase(gen);
+			while (!setValue(x1, y1, randomValue(gen) * 2, false))
+			{
+				x1 = randomCase(gen);
+				y1 = randomCase(gen);
+			}
+		}
+		else {
+			//parent->run = false;
+		}
+	}
 }

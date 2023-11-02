@@ -18,6 +18,20 @@ void Window::gameLoop()
 		update();
 
 		draw();
+
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			/* handle your event here */
+
+			for (int i = 0; i < children.size(); i++)
+			{
+				children[i]->onSDLEvent(event);
+			}
+
+		   //User requests quit
+			if (event.type == SDL_QUIT)
+				run = false;
+		}
 	}
 }
 
@@ -38,10 +52,19 @@ void Window::update()
 void Window::draw()
 {
 	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, white.r, white.g, white.b, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
 	for (int i = 0; i < children.size(); i++)
 	{
 		children[i]->draw(renderer);
+		SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
 	}
 	SDL_RenderPresent(renderer);
+}
+
+void Window::setBackgroudColor(int r, int g, int b, int a)
+{
+	bg_color.r = r;
+	bg_color.g = g;
+	bg_color.b = b;
+	bg_color.a = a;
 }
