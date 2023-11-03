@@ -7,36 +7,11 @@
 #include <conio.h>
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "window.h"
 
 #include "grid.h"
-
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
-#define KEY_UP 72
-#define KEY_DOWN 80
-
-#define KEY_LOWER_T 116
-#define KEY_UPPER_T 84
-
-#define KEY_1 49
-#define KEY_2 50
-#define KEY_3 51
-#define KEY_4 52
-#define KEY_5 53
-#define KEY_6 54
-#define KEY_7 55
-#define KEY_8 56
-#define KEY_9 57
-#define KEY_LOWER_A 97
-#define KEY_UPPER_A 65
-#define KEY_LOWER_B 98
-#define KEY_UPPER_B 66
-#define KEY_LOWER_C 99
-#define KEY_UPPER_C 67
-#define KEY_LOWER_D 100
-#define KEY_UPPER_D 68
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -49,23 +24,69 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        cout << "FATAL ERROR: SDL could not be initialized! SDL Error: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
+    }
+    if (TTF_Init() < 0) {
+        cout << "FATAL ERROR: SDL_ttf could not be initialized! SDL Error: " << SDL_GetError() << endl;
+        SDL_Quit();
+        return EXIT_FAILURE;
+    }
+    //if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
+    //    cout << "ERROR: SDL_mixer could not be initialized! SDL Error: " << Mix_GetError() << endl;
+    //}
 
     Window* game = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (game->win == NULL || game->renderer == NULL)
+    {
+        cout << "FATAL ERROR: The SDL window and/or renderer could not be created! SDL Error: " << SDL_GetError() << endl;
+
+        delete game;
+        SDL_Quit();
+        return EXIT_FAILURE;
+    }
     game->setBackgroudColor(255, 217, 176, 255);
+    SDL_SetWindowTitle(game->win, "C++ 2048");
+
+    SDL_Surface* icon = SDL_LoadBMP("img/2048.bmp");
+    if (icon == NULL)
+    {
+        cout << "ERROR: Could not load icon! SDL Error: " << SDL_GetError() << endl;
+    }
+    else {
+        SDL_SetWindowIcon(game->win, icon);
+        SDL_FreeSurface(icon);
+    }
+
+    //Mix_Music* bgm = Mix_LoadMUS("aud/test.mp3");
 
     Grid* grid = new Grid(game->renderer);
     game->addChild(grid);
     game->grid = grid;
 
-    game->gameLoop();
+    bool run = true;
 
-    //game->showEndingScreen();
+    while (run)
+    {
+        game->gameLoop();
+
+        if (!game->want_to_quit)
+        {
+            if (!game->showEndingScreen())
+                run = false;
+        }
+        else
+            run = false;
+
+        grid->reset();
+    }
 
     delete grid;
     delete game;
-
+    //Mix_FreeMusic(bgm);
+       
+    //Mix_CloseAudio();
     SDL_Quit();
 
     return EXIT_SUCCESS;

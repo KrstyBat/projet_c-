@@ -4,9 +4,6 @@
 #include <random>
 #include "grid.h"
 
-
-
-
 Grid::Grid(SDL_Renderer* renderer)
 {
 	rect = {120, 50, 400, 400};
@@ -386,7 +383,7 @@ void Grid::loadCasesTextures(SDL_Renderer* renderer)
 		if (surf == NULL)
 		{
 			ostringstream error_msg;
-			error_msg << "ERROR: Sprite for Case " << i << " is not loaded!";
+			error_msg << "ERROR: Sprite for Case " << i << " can't load! SDL Error: " << SDL_GetError() << endl;
 			string yes = error_msg.str();
 			cout << yes << endl;
 		}
@@ -395,6 +392,19 @@ void Grid::loadCasesTextures(SDL_Renderer* renderer)
 
 		SDL_FreeSurface(surf);
 	}
+}
+
+void Grid::reset()
+{
+	for (int i = 0; i < sizeY; i++)
+	{
+		vector<Case*> c = grid[i];
+		for (int j = 0; j < sizeX; j++)
+		{
+			c[j]->setValue(0, true);
+		}
+	}
+	selectRandomCases();
 }
 
 void Grid::update()

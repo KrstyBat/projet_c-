@@ -12,11 +12,11 @@ class Grid : public GameObject
 	int sizeX = 4;
 	int sizeY = 4;
 	vector<vector<Case*>> grid;
-	int score = 0;
 
 	HANDLE cmd;
 
 	public:
+		int score = 0;
 		vector<SDL_Texture*> cases_texture;
 
 		Grid(SDL_Renderer* renderer);
@@ -46,16 +46,18 @@ class Grid : public GameObject
 
 		void resetMergedCases();
 
+		void reset();
+
 		void update() override;
 		void draw(SDL_Renderer* renderer) override;
 		void onSDLEvent(SDL_Event event) override;
+
+		int getNumberDigits(int value);
 
 	private:
 		void loadCasesTextures(SDL_Renderer* renderer);
 		
 		void printVector(vector<Case*>& vect);
-
-		int getNumberDigits(int value);
 
 		void setConsoleColor(int value);
 };
